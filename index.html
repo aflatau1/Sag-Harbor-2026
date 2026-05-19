@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sag Harbor · Memorial Day Weekend Trip Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0b2641;
+    --navy2:#13355a;
+    --sea:#2c6e7f;
+    --brass:#b8924f;
+    --brass-lt:#caa765;
+    --linen:#f6f1e8;
+    --linen2:#efe7d7;
+    --ink:#1f2c38;
+    --muted:#6b7682;
+    --line:#dccfae;
+    --good:#2e7d52;
+    --warn:#b07d2a;
+    --bad:#b2473f;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Jost",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 50% -10%,rgba(44,110,127,.10),transparent 60%),
+      linear-gradient(180deg,#eef2f1 0%,var(--linen) 30%);
+    line-height:1.55;
+    padding-bottom:64px;
+    -webkit-font-smoothing:antialiased;
+  }
+  header{
+    background:
+      linear-gradient(135deg,var(--navy) 0%,var(--navy2) 70%,#0d2c4c 100%);
+    color:#fff;
+    padding:52px 22px 40px;
+    text-align:center;
+    border-bottom:3px solid var(--brass);
+    position:relative;
+  }
+  header::after{
+    content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--brass-lt),transparent);
+    opacity:.6;
+  }
+  header .crest{font-size:30px;color:var(--brass-lt);letter-spacing:6px;margin-bottom:6px}
+  header h1{
+    font-family:var(--serif);font-size:42px;font-weight:600;
+    letter-spacing:1px;line-height:1.1;
+  }
+  header .rule{
+    width:64px;height:1px;background:var(--brass-lt);
+    margin:14px auto;opacity:.8;
+  }
+  header p{
+    opacity:.85;font-size:13px;font-weight:500;
+    text-transform:uppercase;letter-spacing:3px;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:0 18px}
+  section{
+    background:#fffefb;
+    border:1px solid var(--line);
+    border-top:2px solid var(--brass);
+    border-radius:4px;
+    padding:26px 26px 24px;
+    margin-top:24px;
+    box-shadow:0 10px 30px rgba(11,38,65,.07);
+  }
+  h2{
+    font-family:var(--serif);
+    font-size:27px;color:var(--navy);font-weight:600;
+    border-bottom:1px solid var(--line);
+    padding-bottom:10px;margin-bottom:18px;
+    display:flex;align-items:baseline;gap:10px;letter-spacing:.3px;
+  }
+  h3{font-family:var(--serif);font-size:20px;color:var(--sea);font-weight:600;margin:14px 0 8px}
+  label{
+    display:block;font-size:11px;font-weight:600;color:var(--navy);
+    margin:12px 0 5px;text-transform:uppercase;letter-spacing:1.2px;
+  }
+  input,select{
+    width:100%;padding:10px 12px;border:1px solid var(--line);
+    border-radius:3px;font-size:14px;background:#fffdf8;font-family:var(--sans);
+    color:var(--ink);
+  }
+  input:focus,select:focus{outline:none;border-color:var(--brass);box-shadow:0 0 0 2px rgba(184,146,79,.25)}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+  .btn{
+    background:var(--navy);color:#fff;border:1px solid var(--navy);
+    padding:12px 26px;border-radius:3px;font-size:12px;font-weight:600;
+    text-transform:uppercase;letter-spacing:2px;cursor:pointer;
+    margin-top:20px;transition:background .15s,color .15s,transform .08s;
+  }
+  .btn:hover{background:var(--brass);border-color:var(--brass);color:var(--navy)}
+  .btn:active{transform:translateY(1px)}
+  .btn.alt{background:transparent;color:var(--navy);border-color:var(--brass)}
+  .btn.alt:hover{background:var(--brass);color:#fff;border-color:var(--brass)}
+  .btn-row{display:flex;gap:12px;flex-wrap:wrap}
+  .pill{
+    display:inline-block;background:transparent;color:var(--sea);
+    border:1px solid var(--line);
+    padding:3px 11px;border-radius:999px;font-size:11px;font-weight:600;
+    letter-spacing:.5px;margin:2px 4px 2px 0;
+  }
+  .weather-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .wcard{
+    background:linear-gradient(165deg,#fbf8f1,#fff);
+    border:1px solid var(--line);border-top:2px solid var(--brass-lt);
+    border-radius:3px;padding:16px;text-align:center;
+  }
+  .wcard .day{font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:1.5px;font-size:13px}
+  .wcard .date{font-size:12px;color:var(--muted)}
+  .wcard .icon{font-size:40px;margin:8px 0}
+  .wcard .temp{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--navy)}
+  .wcard .lo{color:var(--muted);font-size:13px}
+  .wcard .meta{font-size:12px;color:#5a6b76;margin-top:8px}
+  .place,.event{
+    border:1px solid var(--line);border-left:3px solid var(--brass);
+    border-radius:3px;padding:16px 18px;margin-bottom:12px;
+    background:#fffdf8;
+  }
+  .place h4,.event h4{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--navy);margin-bottom:5px}
+  .place p,.event p{font-size:13.5px;color:#4a5862}
+  .place a,.event a,.tag-link{
+    color:var(--sea);font-weight:600;text-decoration:none;font-size:11px;
+    text-transform:uppercase;letter-spacing:1.2px;display:inline-block;margin-top:8px;
+  }
+  .place a:hover,.event a:hover{color:var(--brass)}
+  .cat-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .cat-tabs button{
+    background:transparent;border:1px solid var(--line);color:var(--navy);
+    padding:8px 16px;border-radius:999px;font-size:11px;font-weight:600;cursor:pointer;
+    text-transform:uppercase;letter-spacing:1px;transition:all .15s;
+  }
+  .cat-tabs button:hover{border-color:var(--brass)}
+  .cat-tabs button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .itin-day{border-left:2px solid var(--brass);padding:6px 0 6px 18px;margin:16px 0}
+  .itin-day h3{margin-top:0}
+  .itin-day ul{margin-left:18px;font-size:14px}
+  .itin-day li{margin:6px 0}
+  .note{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px}
+  .summary-box{
+    background:
+      linear-gradient(160deg,var(--navy),var(--navy2));
+    color:#f4efe4;
+    border:1px solid var(--brass);
+    border-radius:3px;padding:22px;font-size:14.5px;
+  }
+  .summary-box strong{color:var(--brass-lt);font-weight:600}
+  .badge{font-size:12px;padding:2px 8px;border-radius:3px;font-weight:700}
+  .b-good{background:#d8f0e2;color:var(--good)}
+  .b-warn{background:#f7e9cf;color:var(--warn)}
+  .b-bad{background:#f5d9d6;color:var(--bad)}
+  footer{
+    text-align:center;font-size:11px;color:var(--muted);margin-top:34px;padding:0 18px;
+    text-transform:uppercase;letter-spacing:1.5px;
+  }
+  a.plain{color:var(--sea);font-weight:600}
+  a.plain:hover{color:var(--brass)}
+  .hidden{display:none}
+  @media(max-width:560px){header h1{font-size:30px}header .crest{letter-spacing:4px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="crest">⚓</div>
+  <h1>Sag Harbor</h1>
+  <div class="rule"></div>
+  <p>A Memorial Day Weekend Itinerary · May 22 – 25, 2026</p>
+</header>
+
+<div class="wrap">
+
+  <section id="form-sec">
+    <h2>🧭 Your Trip Details</h2>
+    <div class="grid">
+      <div>
+        <label for="arrive">Arrival date</label>
+        <input type="date" id="arrive" value="2026-05-22">
+      </div>
+      <div>
+        <label for="depart">Departure date</label>
+        <input type="date" id="depart" value="2026-05-25">
+      </div>
+      <div>
+        <label for="guests">Number of guests</label>
+        <input type="number" id="guests" min="1" max="20" value="4">
+      </div>
+      <div>
+        <label for="kids">Traveling with kids?</label>
+        <select id="kids">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+      <div>
+        <label for="lodging">Lodging</label>
+        <select id="lodging">
+          <option>Hotel / Inn in the Village</option>
+          <option>Rental house</option>
+          <option>Day trip (no overnight)</option>
+        </select>
+      </div>
+      <div>
+        <label for="budget">Dining budget</label>
+        <select id="budget">
+          <option value="value">Casual / value</option>
+          <option value="mid" selected>Mid-range</option>
+          <option value="splurge">Splurge</option>
+        </select>
+      </div>
+      <div>
+        <label for="pace">Trip pace</label>
+        <select id="pace">
+          <option value="relaxed">Relaxed</option>
+          <option value="balanced" selected>Balanced</option>
+          <option value="packed">Pack it in</option>
+        </select>
+      </div>
+    </div>
+    <label style="margin-top:14px">Interests (pick what you love)</label>
+    <div id="interests" class="cat-tabs"></div>
+    <div class="btn-row">
+      <button class="btn" onclick="plan()">✨ Build My Itinerary</button>
+      <button class="btn alt" onclick="resetAll()">Reset</button>
+    </div>
+    <p class="note">Your trip is saved in this browser automatically.</p>
+  </section>
+
+  <div id="results" class="hidden">
+
+    <section>
+      <h2>📋 Trip Summary</h2>
+      <div class="summary-box" id="summary"></div>
+    </section>
+
+    <section>
+      <h2>🌤️ Weather Forecast</h2>
+      <p class="note" id="weather-source">Fetching live forecast for Sag Harbor…</p>
+      <div class="weather-grid" id="weather"></div>
+      <button class="btn alt" style="margin-top:14px" onclick="renderWeather(true)">🔄 Refresh forecast</button>
+      <p class="note" id="weather-advice"></p>
+      <p class="note">Verify before you pack: <a class="plain" target="_blank" href="https://forecast.weather.gov/MapClick.php?lat=40.998&lon=-72.292">NWS Sag Harbor</a> · <a class="plain" target="_blank" href="https://weather.com/weather/tenday/l/Sag+Harbor+NY">Weather.com 10-day</a></p>
+    </section>
+
+    <section>
+      <h2>🎉 Memorial Day Weekend Events</h2>
+      <div id="events"></div>
+      <p class="note">Dates/times for annual events shift year to year — confirm via the venue links and the <a class="plain" target="_blank" href="https://www.sagharborchamber.com/events">Sag Harbor Chamber events calendar</a> and <a class="plain" target="_blank" href="https://www.discoverlongisland.com/events/">Discover Long Island</a>.</p>
+    </section>
+
+    <section>
+      <h2>📍 Places to Go</h2>
+      <div class="cat-tabs" id="placeTabs"></div>
+      <div id="places"></div>
+    </section>
+
+    <section>
+      <h2>🗓️ Your Day-by-Day Itinerary</h2>
+      <div id="itinerary"></div>
+      <div class="btn-row">
+        <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>🔗 Reservations &amp; Quick Links</h2>
+      <div id="links" class="grid"></div>
+    </section>
+
+  </div>
+</div>
+
+<footer>
+  Built for a Memorial Day weekend in Sag Harbor, NY · Always confirm hours, prices &amp; reservations directly with each venue.
+</footer>
+
+<script>
+/* ---------- Data ---------- */
+const INTERESTS = ["Beaches","Dining & wine","History & museums","Shopping","Boating & water","Art & galleries","Nature & hikes","Nightlife"];
+
+const PLACES = {
+  "Beaches & Water": [
+    {n:"Long Beach (Sag Harbor)", d:"Calm bay beach with sunset views — great for families and kayaks. Parking permit or non-resident fee in season.", l:"https://www.google.com/maps/search/Long+Beach+Sag+Harbor+NY", tag:"map"},
+    {n:"Havens Beach", d:"The village's own beach, walkable from Main Street. Playground and lifeguards on holiday weekends.", l:"https://www.google.com/maps/search/Havens+Beach+Sag+Harbor", tag:"map"},
+    {n:"Foster Memorial Beach (Long Beach)", d:"Wide sandy stretch on Noyac Bay, popular for swimming and shelling.", l:"https://www.google.com/maps/search/Foster+Memorial+Beach", tag:"map"},
+    {n:"Sag Harbor Kayak / SUP rentals", d:"Paddle the cove and harbor at slack tide. Reserve ahead on holiday weekends.", l:"https://www.google.com/search?q=Sag+Harbor+kayak+paddleboard+rental", tag:"book"},
+  ],
+  "Dining & Wine": [
+    {n:"The American Hotel", d:"Iconic 1846 dining room, legendary wine list. Jacket-ish, reservations essential.", l:"https://theamericanhotel.com/", tag:"reserve"},
+    {n:"Dopo La Spiaggia", d:"Northern Italian, fresh pasta, lively patio.", l:"https://www.opentable.com/s?term=Dopo%20La%20Spiaggia%20Sag%20Harbor", tag:"reserve"},
+    {n:"Sen Restaurant", d:"Long-running sushi favorite on Main Street.", l:"https://www.opentable.com/s?term=Sen%20Sag%20Harbor", tag:"reserve"},
+    {n:"Page at 63 Main", d:"American bistro, raw bar, central spot for groups.", l:"https://www.opentable.com/s?term=Page%2063%20Main%20Sag%20Harbor", tag:"reserve"},
+    {n:"Lulu Kitchen & Bar", d:"Wood-fired Mediterranean, great for sharing.", l:"https://www.opentable.com/s?term=Lulu%20Sag%20Harbor", tag:"reserve"},
+    {n:"Sagtown Coffee", d:"Morning coffee + pastries before the day starts.", l:"https://www.google.com/maps/search/Sagtown+Coffee+Sag+Harbor", tag:"map"},
+    {n:"Sag Harbor Wine Shop / Wölffer tasting", d:"Grab bottles for the house, or drive to Wölffer Estate vineyard nearby.", l:"https://www.wolffer.com/", tag:"book"},
+  ],
+  "History & Museums": [
+    {n:"Sag Harbor Whaling & Historical Museum", d:"Greek Revival mansion telling the whaling-era story. ~1–1.5 hrs.", l:"https://sagharborwhalingmuseum.org/", tag:"book"},
+    {n:"Custom House", d:"Restored 18th-c. home of the first US customs official (seasonal hours).", l:"https://www.splia.org/custom-house/", tag:"info"},
+    {n:"Old Whalers' Church", d:"Striking 1844 landmark — admire the architecture downtown.", l:"https://www.google.com/maps/search/Old+Whalers+Church+Sag+Harbor", tag:"map"},
+    {n:"Sag Harbor walking tour", d:"Self-guided historic Main Street + Bay Street stroll (free).", l:"https://www.sagharborchamber.com/", tag:"info"},
+  ],
+  "Shopping & Art": [
+    {n:"Main Street boutiques", d:"Independent fashion, home, and gift shops up and down the village.", l:"https://www.google.com/maps/search/Sag+Harbor+Main+Street+shops", tag:"map"},
+    {n:"Sag Harbor Books", d:"Beloved indie bookstore for beach reads.", l:"https://www.google.com/maps/search/Sag+Harbor+Books", tag:"map"},
+    {n:"Sara Nightingale Gallery / local galleries", d:"Contemporary East End art.", l:"https://www.google.com/search?q=Sag+Harbor+art+galleries", tag:"info"},
+    {n:"Sag Harbor Cinema", d:"Restored historic art-house theater with rooftop.", l:"https://sagharborcinema.org/", tag:"book"},
+  ],
+  "Nature & Outdoors": [
+    {n:"Mashomack Preserve (Shelter Island)", d:"~2,000 acres of trails — short ferry hop from North Haven.", l:"https://www.nature.org/en-us/get-involved/how-to-help/places-we-protect/mashomack-preserve/", tag:"info"},
+    {n:"Long Pond Greenbelt trails", d:"Quiet woodland & pond loops just outside the village.", l:"https://www.google.com/maps/search/Long+Pond+Greenbelt", tag:"map"},
+    {n:"Windmill Beach / Marine Park", d:"Easy harbor-front stroll, boat watching, ice cream nearby.", l:"https://www.google.com/maps/search/Windmill+Beach+Sag+Harbor", tag:"map"},
+    {n:"Shelter Island ferry day trip", d:"Bike or drive on; lunch and beaches across the water.", l:"https://shelter-island.org/visitors/", tag:"info"},
+  ],
+};
+
+const EVENTS = [
+  {n:"Memorial Day Parade & Ceremony", w:"Mon May 25", d:"Sag Harbor's traditional Main Street parade and waterfront memorial ceremony — a highlight of the weekend. Arrive early for a curb spot.", l:"https://www.sagharborchamber.com/events", who:["History & museums","Family"]},
+  {n:"Harborfront / Long Wharf strolling", w:"All weekend", d:"Holiday-weekend buzz on Long Wharf — boats, vendors, sunset crowds.", l:"https://www.google.com/maps/search/Long+Wharf+Sag+Harbor", who:["Boating & water"]},
+  {n:"Wölffer Estate vineyard weekend", w:"Fri–Mon", d:"Live music and rosé on the lawn at the nearby Sagaponack/Bridgehampton estate — a Hamptons kickoff-to-summer ritual.", l:"https://www.wolffer.com/visit", who:["Dining & wine"]},
+  {n:"Sag Harbor Cinema screenings", w:"All weekend", d:"Indie films + rooftop bar at the restored historic cinema.", l:"https://sagharborcinema.org/", who:["Art & galleries","Nightlife"]},
+  {n:"Bay Street Theater spring program", w:"Check schedule", d:"Waterfront theater steps from Long Wharf — check for holiday-weekend shows.", l:"https://baystreet.org/", who:["Art & galleries","Nightlife"]},
+  {n:"Farmers / artisan market", w:"Sat morning", d:"Seasonal local produce, flowers and goods (markets often launch around Memorial Day — confirm start date).", l:"https://www.sagharborchamber.com/events", who:["Shopping"]},
+];
+
+/* ---------- State & persistence ---------- */
+const KEY="sagHarborTrip";
+let selectedInterests = new Set(["Beaches","Dining & wine","History & museums"]);
+
+function buildInterestChips(){
+  const box=document.getElementById("interests");
+  box.innerHTML="";
+  INTERESTS.forEach(i=>{
+    const b=document.createElement("button");
+    b.textContent=i;
+    b.className=selectedInterests.has(i)?"on":"";
+    b.onclick=()=>{ selectedInterests.has(i)?selectedInterests.delete(i):selectedInterests.add(i); b.className=selectedInterests.has(i)?"on":""; };
+    box.appendChild(b);
+  });
+}
+
+function saveTrip(){
+  const t=getTrip();
+  t.interests=[...selectedInterests];
+  localStorage.setItem(KEY,JSON.stringify(t));
+}
+function loadTrip(){
+  try{
+    const t=JSON.parse(localStorage.getItem(KEY));
+    if(!t) return;
+    ["arrive","depart","guests","kids","lodging","budget","pace"].forEach(id=>{ if(t[id]!=null) document.getElementById(id).value=t[id]; });
+    if(t.interests){ selectedInterests=new Set(t.interests); }
+  }catch(e){}
+}
+function getTrip(){
+  return {
+    arrive:document.getElementById("arrive").value,
+    depart:document.getElementById("depart").value,
+    guests:+document.getElementById("guests").value||1,
+    kids:document.getElementById("kids").value,
+    lodging:document.getElementById("lodging").value,
+    budget:document.getElementById("budget").value,
+    pace:document.getElementById("pace").value,
+  };
+}
+function resetAll(){
+  localStorage.removeItem(KEY);
+  location.reload();
+}
+
+/* ---------- Weather model (late-May Sag Harbor climatology) ---------- */
+/* Avg high ~70F, low ~52F, ocean still cool (~58F). Variability modeled stochastically. */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let weatherSeed=Math.floor(Math.random()*1e9);
+
+function dateList(){
+  const t=getTrip();
+  const a=new Date(t.arrive+"T12:00:00"), b=new Date(t.depart+"T12:00:00");
+  const out=[]; let d=new Date(a);
+  let guard=0;
+  while(d<=b && guard<14){ out.push(new Date(d)); d.setDate(d.getDate()+1); guard++; }
+  if(out.length===0) out.push(a);
+  return out;
+}
+
+const SAG={lat:40.998,lon:-72.292};
+// WMO weather code -> icon + label
+function wmo(code){
+  const m={
+    0:["☀️","Clear",3],1:["🌤️","Mostly sunny",5],2:["⛅","Partly cloudy",10],3:["☁️","Overcast",20],
+    45:["🌫️","Fog",10],48:["🌫️","Rime fog",10],
+    51:["🌦️","Light drizzle",45],53:["🌦️","Drizzle",55],55:["🌧️","Heavy drizzle",70],
+    56:["🌧️","Freezing drizzle",60],57:["🌧️","Freezing drizzle",70],
+    61:["🌦️","Light rain",60],63:["🌧️","Rain",75],65:["🌧️","Heavy rain",90],
+    66:["🌧️","Freezing rain",70],67:["🌧️","Freezing rain",85],
+    71:["🌨️","Light snow",70],73:["🌨️","Snow",80],75:["❄️","Heavy snow",90],77:["🌨️","Snow grains",60],
+    80:["🌦️","Rain showers",55],81:["🌧️","Rain showers",70],82:["⛈️","Violent showers",90],
+    85:["🌨️","Snow showers",70],86:["❄️","Snow showers",85],
+    95:["⛈️","Thunderstorm",80],96:["⛈️","Thunderstorm w/ hail",85],99:["⛈️","Severe thunderstorm",90]
+  };
+  return m[code]||["🌥️","Mixed",30];
+}
+
+function climoForecast(reseed){
+  if(reseed) weatherSeed=Math.floor(Math.random()*1e9);
+  const rnd=mulberry32(weatherSeed);
+  const cond=[
+    {ic:"☀️",t:"Sunny",p:5},{ic:"🌤️",t:"Mostly sunny",p:10},
+    {ic:"⛅",t:"Partly cloudy",p:20},{ic:"☁️",t:"Cloudy",p:35},
+    {ic:"🌦️",t:"Scattered showers",p:55},{ic:"🌧️",t:"Rain likely",p:80},
+  ];
+  return dateList().map(dt=>{
+    const hi=Math.round(70+(rnd()*16-8));
+    const lo=Math.round(hi-14-rnd()*6);
+    const r=rnd();
+    const c=r<.40?cond[0]:r<.60?cond[1]:r<.75?cond[2]:r<.86?cond[3]:r<.95?cond[4]:cond[5];
+    return {dt,hi,lo,ic:c.ic,label:c.t,pp:c.p,wind:Math.round(7+rnd()*16)};
+  });
+}
+
+async function liveForecast(){
+  const days=dateList();
+  const start=days[0].toISOString().slice(0,10);
+  const end=days[days.length-1].toISOString().slice(0,10);
+  const url=`https://api.open-meteo.com/v1/forecast?latitude=${SAG.lat}&longitude=${SAG.lon}`+
+    `&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,wind_speed_10m_max`+
+    `&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America/New_York&start_date=${start}&end_date=${end}`;
+  const ctrl=new AbortController();
+  const to=setTimeout(()=>ctrl.abort(),8000);
+  const res=await fetch(url,{signal:ctrl.signal});
+  clearTimeout(to);
+  if(!res.ok) throw new Error("HTTP "+res.status);
+  const j=await res.json();
+  const d=j.daily;
+  if(!d||!d.time||!d.time.length) throw new Error("No daily data (outside 16-day forecast window?)");
+  return d.time.map((iso,i)=>{
+    const [ic,label]=wmo(d.weather_code[i]);
+    return {
+      dt:new Date(iso+"T12:00:00"),
+      hi:Math.round(d.temperature_2m_max[i]),
+      lo:Math.round(d.temperature_2m_min[i]),
+      ic,label,
+      pp:d.precipitation_probability_max[i]??0,
+      wind:Math.round(d.wind_speed_10m_max[i])
+    };
+  });
+}
+
+function paintWeather(fc,sourceMsg){
+  const box=document.getElementById("weather");
+  box.innerHTML="";
+  let rainDays=0,warm=0;
+  fc.forEach(w=>{
+    if(w.pp>=55) rainDays++;
+    if(w.hi>=72) warm++;
+    const dow=w.dt.toLocaleDateString(undefined,{weekday:"short"});
+    const md=w.dt.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+    const el=document.createElement("div");
+    el.className="wcard";
+    el.innerHTML=`<div class="day">${dow}</div><div class="date">${md}</div>
+      <div class="icon">${w.ic}</div>
+      <div class="temp">${w.hi}°F</div><div class="lo">low ${w.lo}°F</div>
+      <div class="meta">${w.label}<br>💧 ${w.pp}% · 💨 ${w.wind} mph</div>`;
+    box.appendChild(el);
+  });
+  document.getElementById("weather-source").textContent=sourceMsg;
+  const adv=document.getElementById("weather-advice");
+  let msg="";
+  if(rainDays>=2) msg="🌧️ Plan a rain backup: museum, cinema, shopping and long lunches. Pack a light rain shell.";
+  else if(rainDays===1) msg="🌦️ One iffy day — schedule indoor/flexible activities then, beaches on the clear days.";
+  else msg="☀️ Looking great — prioritize beach time and outdoor dining. ";
+  msg+=" Late-May bay/ocean water is still chilly (~55–60°F): swimming is brisk; bring layers for evenings (50s°F).";
+  if(warm>=2) msg+=" Several warm days — pack sunscreen and a hat.";
+  adv.textContent=msg;
+}
+
+async function renderWeather(reseed){
+  document.getElementById("weather-source").textContent="Fetching live forecast for Sag Harbor…";
+  try{
+    const fc=await liveForecast();
+    const today=new Date().toLocaleDateString(undefined,{month:"short",day:"numeric"});
+    paintWeather(fc,`✅ Live forecast via Open-Meteo · updated ${today}. Trip dates are within the 16-day forecast window.`);
+  }catch(e){
+    const fc=climoForecast(reseed);
+    paintWeather(fc,`⚠️ Live forecast unavailable (${e.message}) — showing a 30-year late-May climatology estimate for Sag Harbor. Tap refresh for another likely scenario, or check the links below.`);
+  }
+}
+
+/* ---------- Render places ---------- */
+let activeCat=null;
+function renderPlaceTabs(){
+  const cats=Object.keys(PLACES);
+  if(!activeCat) activeCat=cats[0];
+  const tabs=document.getElementById("placeTabs");
+  tabs.innerHTML="";
+  cats.forEach(c=>{
+    const b=document.createElement("button");
+    b.textContent=c; b.className=c===activeCat?"on":"";
+    b.onclick=()=>{activeCat=c;renderPlaceTabs();renderPlaces();};
+    tabs.appendChild(b);
+  });
+}
+function tagLabel(t){
+  return t==="reserve"?"🍽️ Reserve a table"
+    :t==="book"?"🎟️ Book / details"
+    :t==="map"?"🗺️ Open in Maps"
+    :"ℹ️ More info";
+}
+function renderPlaces(){
+  const box=document.getElementById("places");
+  box.innerHTML="";
+  PLACES[activeCat].forEach(p=>{
+    const el=document.createElement("div");
+    el.className="place";
+    el.innerHTML=`<h4>${p.n}</h4><p>${p.d}</p>
+      <a href="${p.l}" target="_blank" rel="noopener">${tagLabel(p.tag)} →</a>`;
+    box.appendChild(el);
+  });
+}
+
+/* ---------- Events ---------- */
+function renderEvents(){
+  const box=document.getElementById("events");
+  box.innerHTML="";
+  EVENTS.forEach(e=>{
+    const el=document.createElement("div");
+    el.className="event";
+    el.innerHTML=`<h4>${e.n} <span class="pill">${e.w}</span></h4>
+      <p>${e.d}</p>
+      <a href="${e.l}" target="_blank" rel="noopener">Event info / tickets →</a>`;
+    box.appendChild(el);
+  });
+}
+
+/* ---------- Summary ---------- */
+function nights(){
+  const t=getTrip();
+  const a=new Date(t.arrive), b=new Date(t.depart);
+  return Math.max(0,Math.round((b-a)/86400000));
+}
+function renderSummary(){
+  const t=getTrip();
+  const n=nights();
+  const fmt=s=>new Date(s+"T12:00:00").toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+  const ints=[...selectedInterests].map(i=>`<span class="pill" style="background:rgba(255,255,255,.2);color:#fff">${i}</span>`).join("");
+  document.getElementById("summary").innerHTML=
+    `<strong>${t.guests} guest${t.guests>1?"s":""}</strong> in Sag Harbor — <strong>${fmt(t.arrive)}</strong> to <strong>${fmt(t.depart)}</strong>
+     (${n} night${n!==1?"s":""}${t.lodging==="Day trip (no overnight)"?" · day trip":""}).<br>
+     Lodging: ${t.lodging} · ${t.kids==="yes"?"traveling with kids":"adults"} · ${t.budget} dining · ${t.pace} pace.<br>
+     <div style="margin-top:8px">${ints||""}</div>`;
+}
+
+/* ---------- Itinerary generator ---------- */
+function pick(cat,i){ const arr=PLACES[cat]; return arr[i%arr.length]; }
+function renderItinerary(){
+  const t=getTrip();
+  const days=dateList();
+  const box=document.getElementById("itinerary");
+  box.innerHTML="";
+  const kids=t.kids==="yes";
+  const packed=t.pace==="packed", relaxed=t.pace==="relaxed";
+
+  days.forEach((dt,idx)=>{
+    const isFirst=idx===0, isLast=idx===days.length-1;
+    const isMonday=dt.getDay()===1;
+    const dow=dt.toLocaleDateString(undefined,{weekday:"long"});
+    const md=dt.toLocaleDateString(undefined,{month:"long",day:"numeric"});
+    const items=[];
+
+    if(isFirst){
+      items.push("Arrive & check in; coffee at <b>Sagtown Coffee</b> and a stroll down Main Street.");
+      items.push("Sunset walk on <b>Long Wharf</b> + harbor-front to get oriented.");
+    } else {
+      items.push("Breakfast / coffee at <b>Sagtown Coffee</b>.");
+    }
+
+    if(isMonday){
+      items.push("🎖️ <b>Memorial Day Parade & waterfront ceremony</b> on Main Street — arrive early for a spot.");
+    }
+
+    // Morning activity by interest
+    if(selectedInterests.has("Beaches")||selectedInterests.has("Boating & water")){
+      items.push(`Beach/water time: <b>${pick("Beaches & Water",idx).n}</b>${kids?" (family-friendly, calm bay)":""}.`);
+    }
+    if(selectedInterests.has("History & museums") && (idx<2||packed)){
+      items.push(`Visit <b>${pick("History & Museums",idx).n}</b>.`);
+    }
+    if(selectedInterests.has("Nature & hikes")){
+      items.push(`Outdoors: <b>${pick("Nature & Outdoors",idx).n}</b>.`);
+    }
+
+    // Lunch
+    items.push("Lunch in the village" + (t.budget==="value"?" — casual harbor spot.":t.budget==="splurge"?" — sit-down with a glass of rosé.":"."));
+
+    // Afternoon
+    if(selectedInterests.has("Shopping")||selectedInterests.has("Art & galleries")){
+      items.push(`Browse <b>${pick("Shopping & Art",idx).n}</b> and Main Street boutiques.`);
+    }
+    if(selectedInterests.has("Dining & wine")){
+      items.push("Afternoon: tasting at <b>Wölffer Estate</b> or pick up bottles at the wine shop.");
+    }
+    if(!relaxed && (packed || idx%2===0)){
+      items.push("Optional: short Shelter Island ferry hop or scenic North Haven drive.");
+    }
+
+    // Dinner — rotate restaurants by budget
+    const dinPool = t.budget==="splurge"
+      ? ["The American Hotel","Lulu Kitchen & Bar","Sen Restaurant"]
+      : t.budget==="value"
+      ? ["Page at 63 Main","Dopo La Spiaggia","casual harbor pub"]
+      : ["Dopo La Spiaggia","Page at 63 Main","Lulu Kitchen & Bar"];
+    items.push(`Dinner reservation at <b>${dinPool[idx%dinPool.length]}</b> — book ahead, holiday weekend fills up.`);
+
+    if(selectedInterests.has("Nightlife")||selectedInterests.has("Art & galleries")){
+      if(!isLast) items.push("Evening: film at <b>Sag Harbor Cinema</b> or a show at <b>Bay Street Theater</b>.");
+    }
+    if(isLast && t.lodging!=="Day trip (no overnight)"){
+      items.push("Pack up, last harbor walk, depart.");
+    }
+
+    const div=document.createElement("div");
+    div.className="itin-day";
+    div.innerHTML=`<h3>Day ${idx+1} · ${dow}, ${md}${isMonday?" — Memorial Day":""}</h3>
+      <ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul>`;
+    box.appendChild(div);
+  });
+
+  const tip=document.createElement("p");
+  tip.className="note";
+  tip.textContent="Tip: Memorial Day weekend is the East End's busiest kickoff to summer — book restaurants and any tours/rentals now, and expect Friday/Monday traffic on Rte 27 (travel early or late).";
+  box.appendChild(tip);
+}
+
+/* ---------- Quick links ---------- */
+const LINKS=[
+  {n:"OpenTable — Sag Harbor",u:"https://www.opentable.com/s?term=Sag%20Harbor%20NY"},
+  {n:"Resy — Hamptons / Sag Harbor",u:"https://resy.com/cities/ny?query=Sag%20Harbor"},
+  {n:"The American Hotel (rooms & dining)",u:"https://theamericanhotel.com/"},
+  {n:"Sag Harbor Inn",u:"https://www.sagharborinn.com/"},
+  {n:"Baron's Cove (hotel)",u:"https://www.caperesorts.com/barons-cove"},
+  {n:"Airbnb — Sag Harbor",u:"https://www.airbnb.com/s/Sag-Harbor--NY"},
+  {n:"Hampton Jitney (bus from NYC)",u:"https://www.hamptonjitney.com/"},
+  {n:"LIRR (train schedules)",u:"https://www.mta.info/lirr"},
+  {n:"Sag Harbor Cinema tickets",u:"https://sagharborcinema.org/"},
+  {n:"Bay Street Theater",u:"https://baystreet.org/"},
+  {n:"Sag Harbor Chamber (events & info)",u:"https://www.sagharborchamber.com/"},
+  {n:"Village parking & beach permits",u:"https://www.sagharborny.gov/"},
+];
+function renderLinks(){
+  const box=document.getElementById("links");
+  box.innerHTML="";
+  LINKS.forEach(x=>{
+    const el=document.createElement("div");
+    el.className="place";
+    el.innerHTML=`<a href="${x.u}" target="_blank" rel="noopener">${x.n} →</a>`;
+    box.appendChild(el);
+  });
+}
+
+/* ---------- Orchestrate ---------- */
+function plan(){
+  const t=getTrip();
+  if(!t.arrive||!t.depart||new Date(t.depart)<new Date(t.arrive)){
+    alert("Please pick a valid arrival and departure date (departure on or after arrival).");
+    return;
+  }
+  saveTrip();
+  document.getElementById("results").classList.remove("hidden");
+  renderSummary();
+  renderWeather(false);
+  renderEvents();
+  renderPlaceTabs();
+  renderPlaces();
+  renderItinerary();
+  renderLinks();
+  document.getElementById("results").scrollIntoView({behavior:"smooth"});
+}
+
+/* init */
+loadTrip();
+buildInterestChips();
+</script>
+</body>
+</html>
